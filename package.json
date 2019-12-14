@@ -1,0 +1,35 @@
+{
+  "name": "qtnode-middleware-devserver",
+  "version": "1.0.11",
+  "description": "webpack-dev-server中间件",
+  "main": "dist/index.js",
+  "bin": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "guoyujie",
+  "bugs": "https://github.com/jaygoo/qtnode-middleware-devserver/issues",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jaygoo/qtnode-middleware-devserver.git"
+  },
+  "homepage": "https://github.com/jaygoo/qtnode-middleware-devserver/blob/master/README.MD",
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^4.0.1",
+    "inquirer": "^7.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "colors": "^1.4.0",
+    "eslint": "^4.19.1",
+    "eslint-plugin-babel": "^5.3.0",
+    "qtnode-middleware-console": "^1.0.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
