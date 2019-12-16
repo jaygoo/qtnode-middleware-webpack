@@ -1,113 +1,48 @@
+'use strict'
+
 import * as priter from "qtnode-middleware-console";
-priter.warn("打连击", 1,2);
+const path = require("path");
 
-var colors = require('colors');
+const express = require('express');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 
-colors.setTheme({
-    log: 'white',
-    info: 'green',
-    data: 'grey',
-    help: 'cyan',
-    warn: 'yellow',
-    debug: 'blue',
-    error: 'red',
-    tip: 'cyan'
+const app = express();
 
-});
+process.env.NODE_ENV = 'production'
+module.exports = function (args) {
 
-export function warn(...args) {
-    let bo = true;
-    let iter = args[Symbol.iterator]();
-    while (bo) {
-        let c = iter.next();
-        if( bo = !c.done)
-            console.log(("【warn " + new Date().Format("yyyy-MM-dd HH:mm:ss") + '】' + c.value.toString()).warn);
-    }
-}
+    let opts = Object.assign({}, args);
+    const packagejson = require(path.resolve(path.resolve(opts.rootDir, 'package.json')));
+    const prodconfig = require(path.resolve(path.resolve(opts.rootDir, 'wpconf/prod.js'))
+    const compiler = webpack(prodconfig); // 初始化编译器
 
-export function error(...args) {
-    let bo = true;
-    let iter = args[Symbol.iterator]();
-    while (bo) {
-        let c = iter.next();
-        if( bo = !c.done)
-            console.log(("【error " + new Date().Format("yyyy-MM-dd HH:mm:ss") + '】' + c.value.toString()).error);
-    }
-}
+    return async function (next) {
+        priter.info("start dev");
 
-export function debug(...args) {
-    let bo = true;
-    let iter = args[Symbol.iterator]();
-    while (bo) {
-        let c = iter.next();
-        if( bo = !c.done)
-            console.log(("【debug " + new Date().Format("yyyy-MM-dd HH:mm:ss") + '】' + c.value.toString()).debug);
-    }
-}
+        // 使用webpack-dev-middleware中间件
+        app.use(webpackDevMiddleware(compiler, {
+            publicPath: prodconfig.output.publicPath,
+            info: false,
+            noInfo: true
+        }));
 
-export function data(...args) {
-    let bo = true;
-    let iter = args[Symbol.iterator]();
-    while (bo) {
-        let c = iter.next();
-        if( bo = !c.done)
-            console.log(("【data " + new Date().Format("yyyy-MM-dd HH:mm:ss") + '】' + c.value.toString()).data);
-    }
-}
+        // 使用webpack-hot-middleware中间件，配置在console台输出日志
+        app.use(webpackHotMiddleware(compiler, {
+            log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000}));
+        // app.use(express.static(config.output.path))
 
-export function help(...args) {
-    let bo = true;
-    let iter = args[Symbol.iterator]();
-    while (bo) {
-        let c = iter.next();
-        if( bo = !c.done)
-            console.log(("【help " + new Date().Format("yyyy-MM-dd HH:mm:ss") + '】' + c.value.toString()).help);
-    }
-}
+        // 使用静态资源目录，才能访问到/dist/idndex.html
+        app.use(express.static(prodconfig.output.path))
 
-export function info(...args) {
-    let bo = true;
-    let iter = args[Symbol.iterator]();
-    while (bo) {
-        let c = iter.next();
-        if( bo = !c.done)
-            console.log(("【info " + new Date().Format("yyyy-MM-dd HH:mm:ss") + '】' + c.value.toString()).info);
-    }
-}
+        // Serve the files on port 3000.
+        const server = app.listen( ()=> {
+            console.info(`devserver listening: http://localhost:${server.address()['port']}` );
+        })
 
-export function log(...args) {
-    let bo = true;
-    let iter = args[Symbol.iterator]();
-    while (bo) {
-        let c = iter.next();
-        if( bo = !c.done)
-            console.log(("【log " + new Date().Format("yyyy-MM-dd HH:mm:ss") + '】' + c.value.toString()).log);
-    }
-}
+        next();
 
-export function tip(...args) {
-    let bo = true;
-    let iter = args[Symbol.iterator]();
-    while (bo) {
-        let c = iter.next();
-        if( bo = !c.done)
-            console.log(("【tip " + new Date().Format("yyyy-MM-dd HH:mm:ss") + '】' + c.value.toString()).tip);
-    }
-}
-
-Date.prototype.Format = function (fmt) {
-    let o = {
-        "M+": this.getMonth() + 1, //月份
-        "d+": this.getDate(), //日
-        "H+": this.getHours(), //小时
-        "m+": this.getMinutes(), //分
-        "s+": this.getSeconds(), //秒
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-        "S": this.getMilliseconds() //毫秒
     };
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
-}
-warn(1,2,3);
+
+};

@@ -3,7 +3,7 @@
 process.env.NODE_ENV = 'production'
 
 const webpack = require('webpack')
-const webpackConfig = require('./base')
+const webpackConfig = require('./prod')
 
 webpack(webpackConfig, (err, stats) => {
     if (err) throw err
