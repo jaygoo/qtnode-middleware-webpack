@@ -1,6 +1,6 @@
 {
   "name": "qtnode-middleware-devserver",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "webpack-dev-server中间件",
   "main": "dist/index.js",
   "bin": {},
@@ -22,8 +22,6 @@
     "webpack-hot-middleware": "^2.25.0",
     "express": "^4.17.1",
     "qtnode-middleware-console": "^1.0.4"
-
-
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
