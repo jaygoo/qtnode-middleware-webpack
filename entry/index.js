@@ -10,13 +10,14 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 
 const app = express();
 
-process.env.NODE_ENV = 'production'
+
 module.exports = function (args) {
+    console.log(path.resolve(path.resolve(opts.rootDir, 'wpconf/prod.js')));
 
     let opts = Object.assign({}, args);
     const packagejson = require(path.resolve(path.resolve(opts.rootDir, 'package.json')));
-    const prodconfig = require(path.resolve(path.resolve(opts.rootDir, 'wpconf/prod.js'))
-    const compiler = webpack(prodconfig); // 初始化编译器
+    const prodconfig = require(path.resolve(path.resolve(opts.rootDir, 'wpconf/prod.js')));
+    const compiler = webpack(prodconfig);
 
     return async function (next) {
         priter.info("start dev");
