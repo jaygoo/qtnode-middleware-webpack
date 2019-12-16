@@ -12,7 +12,7 @@ const app = express();
 
 
 module.exports = function (args) {
-    console.log(path.resolve(path.resolve(opts.rootDir, 'wpconf/prod.js')));
+    console.log(path.resolve(path.resolve(args.rootDir, 'wpconf/prod.js')));
 
     let opts = Object.assign({}, args);
     const packagejson = require(path.resolve(path.resolve(opts.rootDir, 'package.json')));
