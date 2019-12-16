@@ -18,7 +18,7 @@ module.exports = function (args) {
     const packagejson = require(path.resolve(path.resolve(opts.rootDir, 'package.json')));
     const prodconfig = require(path.resolve(path.resolve(opts.rootDir, 'wpconf/prod.js')));
     const compiler = webpack(prodconfig);
-
+    console.log(packagejson, prodconfig);
     return async function (next) {
         priter.info("start dev");
 
@@ -35,6 +35,7 @@ module.exports = function (args) {
         // app.use(express.static(config.output.path))
 
         // 使用静态资源目录，才能访问到/dist/idndex.html
+        console.log(prodconfig.output.path);
         app.use(express.static(prodconfig.output.path))
 
         // Serve the files on port 3000.
