@@ -1,6 +1,6 @@
 {
   "name": "qtnode-middleware-devserver",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "webpack-dev-server中间件",
   "main": "dist/index.js",
   "bin": {},
