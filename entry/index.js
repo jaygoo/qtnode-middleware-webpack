@@ -1,6 +1,6 @@
 'use strict'
 
-const require= require("qtnode-middleware-console");
+const priter= require("qtnode-middleware-console");
 const path = require("path");
 
 const express = require('express');
