@@ -1,10 +1,8 @@
 'use strict';
 
-process.env.NODE_ENV = 'production';
 const webpack = require('webpack');
 const priter= require('qtnode-middleware-console');
 const path = require('path');
-
 
 
 module.exports = function (args) {
