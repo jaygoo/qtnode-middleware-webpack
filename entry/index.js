@@ -1,50 +1,43 @@
-'use strict'
+'use strict';
 
-const priter= require("qtnode-middleware-console");
-const path = require("path");
-
-const express = require('express');
+process.env.NODE_ENV = 'production';
 const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
+const priter= require('qtnode-middleware-console');
+const path = require('path');
 
-const app = express();
 
 
 module.exports = function (args) {
-    console.log(path.resolve(path.resolve(args.rootDir, 'wpconf/prod.js')));
-
     let opts = Object.assign({}, args);
-    const packagejson = require(path.resolve(path.resolve(opts.rootDir, 'package.json')));
-    const prodconfig = require(path.resolve(path.resolve(opts.rootDir, 'wpconf/dev.js')));
-    const compiler = webpack(prodconfig);
-    console.log(packagejson, prodconfig);
+
+    const prodconfig = require(path.resolve(path.resolve(opts.rootDir, 'wpconf/prod.js')));
+
     return async function (next) {
-        priter.info("start dev");
+        priter.info('start build');
 
-        // 使用webpack-dev-middleware中间件
-        app.use(webpackDevMiddleware(compiler, {
-            publicPath: prodconfig.output.publicPath,
-            info: false,
-            noInfo: true
-        }));
+        webpack(prodconfig, (err, stats) => {
+            if (err) {
+                priter.info('build faild');
 
-        // 使用webpack-hot-middleware中间件，配置在console台输出日志
-        app.use(webpackHotMiddleware(compiler, {
-            log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000}));
-        // app.use(express.static(config.output.path))
+                throw err;
+            }
 
-        // 使用静态资源目录，才能访问到/dist/idndex.html
-        console.log(prodconfig.output.path);
-        app.use(express.static(prodconfig.output.path))
+            process.stdout.write(stats.toString({
+                colors: true,
+                modules: false,
+                children: false,
+                chunks: false,
+                chunkModules: false
+            }) + '\n\n' );
 
-        // Serve the files on port 3000.
-        const server = app.listen( ()=> {
-            console.info(`devserver listening: http://localhost:${server.address()['port']}` );
-        })
+            if (stats.hasErrors()) {
+                priter.info('build faild');
+
+                process.exit(1);
+            }
+        });
+        priter.info('build success');
 
         next();
-
     };
-
 };
