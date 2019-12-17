@@ -16,7 +16,7 @@ module.exports = function (args) {
 
     let opts = Object.assign({}, args);
     const packagejson = require(path.resolve(path.resolve(opts.rootDir, 'package.json')));
-    const prodconfig = require(path.resolve(path.resolve(opts.rootDir, 'wpconf/prod.js')));
+    const prodconfig = require(path.resolve(path.resolve(opts.rootDir, 'wpconf/dev.js')));
     const compiler = webpack(prodconfig);
     console.log(packagejson, prodconfig);
     return async function (next) {
