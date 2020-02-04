@@ -8,7 +8,7 @@ const path = require('path');
 module.exports = function (args) {
     let opts = Object.assign({}, args);
 
-    const prodconfig = require(path.resolve(path.resolve(opts.rootDir, 'wpconf/prod.js')));
+    const prodconfig = require(path.resolve(path.resolve(opts.rootDir, 'wpconf/prod')));
 
     return async function (next) {
         priter.info('start build');
