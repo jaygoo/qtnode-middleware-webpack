@@ -10,8 +10,9 @@ module.exports = function (args) {
     const context = options.context;
     const pipeConfig = context.pipeConfig;
 
-    const lanague = !!!pipeConfig.config ? 'js' :
-        (!!('lanague' in pipeConfig.config) ? pipeConfig.config['lanague'] : 'js');
+    const lanague = 'js';
+        // !!!pipeConfig.config ? 'js' :
+        // (!!('lanague' in pipeConfig.config) ? pipeConfig.config['lanague'] : 'js');
     const prodconfig = require(path.resolve(path.resolve(options.rootDir, `wpconf/prod.${lanague}`)));
 
     return async function (next) {
