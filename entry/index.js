@@ -6,9 +6,13 @@ const path = require('path');
 
 
 module.exports = function (args) {
-    let opts = Object.assign({}, args);
+    const options = Object.assign({}, args);
+    const context = options.context;
+    const pipeConfig = context.pipeConfig;
 
-    const prodconfig = require(path.resolve(path.resolve(opts.rootDir, 'wpconf/prod')));
+    const lanague = !!!pipeConfig.config ? 'js' :
+        (!!('lanague' in pipeConfig.config) ? pipeConfig.config['lanague'] : 'js');
+    const prodconfig = require(path.resolve(path.resolve(options.rootDir, `wpconf/prod.${lanague}`)));
 
     return async function (next) {
         priter.info('start build');
